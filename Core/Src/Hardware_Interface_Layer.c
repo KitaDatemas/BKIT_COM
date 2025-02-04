@@ -192,6 +192,8 @@ BKITCOM_Error_Code HAL_ErrorCode_Handler (HAL_StatusTypeDef Error_Code) {
 	case HAL_BUSY:
 		return BKITCOM_BUSY;
 	case HAL_ERROR:
+//		if (recent)
+//			HAL_UART_GetError(huart)
 		break;
 	}
 }

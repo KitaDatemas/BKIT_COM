@@ -1,0 +1,7 @@
+../Core/Src/Hardware_Interface_Layer.c:13:6:hw_init	9
+../Core/Src/Hardware_Interface_Layer.c:76:20:i2c_config	5
+../Core/Src/Hardware_Interface_Layer.c:95:20:spi_config	5
+../Core/Src/Hardware_Interface_Layer.c:115:20:uart_config	5
+../Core/Src/Hardware_Interface_Layer.c:134:20:RS485_config	5
+../Core/Src/Hardware_Interface_Layer.c:154:20:hw_send	9
+../Core/Src/Hardware_Interface_Layer.c:188:20:HAL_ErrorCode_Handler	4
