@@ -114,7 +114,8 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  uart_config(2, 115200);
+  hw_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
