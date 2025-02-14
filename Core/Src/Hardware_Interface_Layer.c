@@ -317,11 +317,11 @@ BKITCOM_Error_Code hw_send(Protocol com,uint8_t * data, uint32_t data_length) {
 				HAL_UART_Receive(Com.uart_Handler->uart, ack_data, 1, 500);
 				if (ack_data[0] != 1)
 						Error_Code = BKITCOM_NOACK;
-					else
-						Error_Code = BKITCOM_SUCCESS;
+				else
+					Error_Code = BKITCOM_SUCCESS;
 				goto SEND_RETURN;
 			UART_DONE_SEND:
-			break;
+				break;
 
 		case I2C:
 			I2C_SEND:
@@ -370,12 +370,12 @@ BKITCOM_Error_Code hw_send(Protocol com,uint8_t * data, uint32_t data_length) {
 				/*Fill later on*/
 
 			RS485_DONE_SEND:
-			break;
+				break;
 
 		default:
 			/*Dealing with uninitialized protocol calling*/
 			PROTOCOL_NOT_INIT:
-			return BKITCOM_PROTOCOL_NOT_INIT;
+				return BKITCOM_PROTOCOL_NOT_INIT;
 		}
 
 	ERROR_CODE_HANDLER:
@@ -401,23 +401,10 @@ BKITCOM_Error_Code hw_receive(uint8_t * data);
 void Hardware_Interface_Layer_FSM (void) {
 	switch (state) {
 	case IDLE:
-//	/*Com_Send_Signal is set when sending function is called. Check Com_Send_Signal for arriving calling sending function*/
-//		if (Com_Send_Signal != NONE) {
-//			state = VERI_SENDING;
-//		}
 		if (Com_Receive_Signal != NONE){
 			state = VERI_RECEIVING;
 		}
 		break;
-//	/*Verified error code after sending*/
-//	case VERI_SENDING:
-//		if (code == SUCCESS)
-//			state = IDLE;
-//		else {
-//
-//			}
-//		}
-//		break;
 	case VERI_RECEIVING:
 		if (code == SUCCESS){
 			state = IDLE;
