@@ -11,11 +11,17 @@ uint8_t Received_Buffer_Flag = 0;
 uint8_t Received_Buffer[50] = {0};
 
 BKITCOM_Error_Code code;
-BKIT_COM_type_t Com;
+BKITCOM_type_t Com;
 Protocol Com_Send_Signal;
 Protocol Com_Receive_Signal;
 
-uint8_t Received_Buffer [50];
+BKITCOM_Role_type_t BKITCOM_Role;
+
+uint8_t UART_Buffer[16];
+uint8_t SPI_Buffer[16];
+uint8_t I2C_Buffer[16];
+uint8_t RS485_Buffer[16];
+
 
 HIL_State state = IDLE;
 
@@ -108,7 +114,23 @@ void RS485_init(void){
 	}
 }
 
-void hw_init(void) {
+void slave_init(void){
+	if (uart_en){
+		HAL_UART_Receive_IT(Com.uart_Handler->uart, UART_Buffer, 16);
+	}
+	if (spi_en){
+		HAL_SPI_Receive_IT(Com.spi_Handler->spi, SPI_Buffer, 16);
+	}
+	if (i2c_en){
+		HAL_I2C_Slave_Receive_IT(Com.i2c_Handler->i2c, I2C_Buffer, 16);
+	}
+	if (RS485_en){
+
+	}
+}
+
+void hw_init(BKITCOM_Role_type_t Role) {
+	BKITCOM_Role = Role;
 	if (i2c_en) {
 		Com.i2c_Handler->i2c->Init.ClockSpeed = 100000;
 		Com.i2c_Handler->i2c->Init.DutyCycle = I2C_DUTYCYCLE_2;
@@ -169,6 +191,9 @@ void hw_init(void) {
 			Error_Handler();
 		}
 	}
+
+
+	if(BKITCOM_Role == BKITCOM_SLAVE) 		slave_init();
 
 	timerInit(Com->i2c_Handler->i2c);
 }
@@ -394,7 +419,23 @@ BKITCOM_Error_Code hw_send(Protocol com,uint8_t * data, uint32_t data_length) {
 		return code;
 }
 
-BKITCOM_Error_Code hw_receive(uint8_t * data);
+BKITCOM_Error_Code hw_receive(Protocol com, uint8_t * data, uint8_t data_length){
+	switch (com) {
+		case UART:
+			HAL_UART_Receive(Com.uart_Handler->uart, UART_Buffer, 16, 1000);
+			break;
+		case SPI:
+			HAL_SPI_Receive(Com.spi_Handler->spi, SPI_Buffer, 16, 1000);
+			break;
+		case I2C:
+			HAL_I2C_Slave_Receive(Com.i2c_Handler->i2c, I2C_Buffer, 16, 1000);
+			break;
+		case RS485:
+			break;
+		default:
+			break;
+	}
+}
 
 
 

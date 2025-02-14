@@ -10,6 +10,27 @@
 #include "main.h"
 #include "Error_Code.h"
 #include "softwareTimer.h"
+#include "common.h"
+/*
+ * Predefined Protocols
+ * uart2, uart3
+ * i2c1, i2c2, i2c3
+ * spi1, spi2
+ * */
+
+/*
+ * Predefined Timer
+ * TIM2
+ * */
+
+/*
+ * RS485_Configuration
+ * PC11: TX
+ * PC10: RX
+ * PA15: Enable
+ * */
+
+
 
 typedef struct {
 	UART_HandleTypeDef * uart;
@@ -38,19 +59,26 @@ typedef struct {
 	I2C_type_t *i2c_Handler;
 	SPI_type_t *spi_Handler;
 	RS485_type_t *RS485_Handler;
-} BKIT_COM_type_t;
+} BKITCOM_type_t;
 
-typedef enum {NONE, UART, I2C, SPI, RS485} Protocol;
+
 typedef enum {IDLE, VERI_SENDING, VERI_RECEIVING, ERROR_STATE} HIL_State;
 
 extern uint8_t uart_en, i2c_en, spi_en, RS485_en;
-extern BKIT_COM_type_t Com;
+extern BKITCOM_type_t Com;
 extern BKITCOM_Error_Code code;
 extern Protocol Com_Send_Signal;
 extern Protocol Com_Receive_Signal;
 
 extern uint8_t Received_Buffer [50];
 extern char Received_Buffer_Flag;
+
+extern BKITCOM_Role_type_t BKITCOM_Role;
+
+extern uint8_t UART_Buffer[16];
+extern uint8_t SPI_Buffer[16];
+extern uint8_t I2C_Buffer[16];
+extern uint8_t RS485_Buffer[16];
 
 extern HIL_State state;
 
@@ -59,11 +87,12 @@ BKITCOM_Error_Code i2c_config(uint8_t i2c_x, uint32_t address);
 BKITCOM_Error_Code spi_config(uint8_t spi_x, uint16_t CPOL, uint16_t CPHA);
 BKITCOM_Error_Code RS485_config(uint8_t uart_x, uint32_t baudrate, uint32_t address);
 
+void slave_init(void);
 void i2c_init(void);
 void spi_init(void);
 void uart_init(void);
 void RS485_init(void);
-void hw_init(void);
+void hw_init(BKITCOM_Role_type_t Role);
 
 void hw_reboot(Protocol com);
 
