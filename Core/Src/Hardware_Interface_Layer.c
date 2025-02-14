@@ -169,6 +169,8 @@ void hw_init(void) {
 			Error_Handler();
 		}
 	}
+
+	timerInit(Com->i2c_Handler->i2c);
 }
 
 BKITCOM_Error_Code i2c_config (uint8_t i2c_x, uint32_t address) {
@@ -294,44 +296,102 @@ BKITCOM_Error_Code ErrorCode_Handler (HAL_StatusTypeDef Error_Code) {
 
 BKITCOM_Error_Code hw_send(Protocol com,uint8_t * data, uint32_t data_length) {
 	HAL_StatusTypeDef Error_Code;
+	void * receive_label = NULL;
 
 	/*Com_Send_Signal is set for FSM to capture the sending signal*/
 	Com_Send_Signal = com;
 	uint8_t retry = 0;
+	uint8_t ack_data[1] = {0};
 
-	/*Determined the protocol to send*/
+	/*Determined the protocol and send*/
 	SEND_MESSAGE:
-	switch (Com_Send_Signal) {
-	case UART:
-		if (uart_en == 0)
-			goto PROTOCOL_NOT_INIT;
-		Error_Code = HAL_UART_Transmit(Com.uart_Handler->uart, data, data_length, 50);
-		break;
-	case I2C:
-		if (i2c_en == 0)
-			goto PROTOCOL_NOT_INIT;
-		Error_Code = HAL_I2C_Master_Transmit(Com.i2c_Handler->i2c, Com.i2c_Handler->address, data, data_length, 50);
-		break;
-	case SPI:
-		if (spi_en == 0)
-			goto PROTOCOL_NOT_INIT;
-		Error_Code = HAL_SPI_Transmit(Com.spi_Handler->spi, data, data_length, 50);
-		break;
-	case RS485:
-		if (RS485_en == 0)
-			goto PROTOCOL_NOT_INIT;
-		break;
-	default:
-		/*Dealing with uninitialized protocol calling*/
-		PROTOCOL_NOT_INIT:
-		return BKITCOM_PROTOCOL_NOT_INIT;
-	}
-	code = Error_Code_Handler(Error_Code);
-	if (code != BKITCOM_SUCCESS && retry < 3) {
-		retry++;
-		goto SEND_MESSAGE;
-	}
-	return code;
+		switch (Com_Send_Signal) {
+		case UART:
+			UART_SEND:
+				if (uart_en == 0)
+					goto PROTOCOL_NOT_INIT;
+				Error_Code = HAL_UART_Transmit(Com.uart_Handler->uart, data, data_length, 50);
+				receive_label = &&UART_RECEIVE;
+				goto UART_DONE_SEND;
+			UART_RECEIVE:
+				HAL_UART_Receive(Com.uart_Handler->uart, ack_data, 1, 500);
+				if (ack_data[0] != 1)
+						Error_Code = BKITCOM_NOACK;
+					else
+						Error_Code = BKITCOM_SUCCESS;
+				goto SEND_RETURN;
+			UART_DONE_SEND:
+			break;
+
+		case I2C:
+			I2C_SEND:
+				if (i2c_en == 0)
+					goto PROTOCOL_NOT_INIT;
+				Error_Code = HAL_I2C_Master_Transmit(Com.i2c_Handler->i2c, Com.i2c_Handler->address, data, data_length, 50);
+				receive_label = &&I2C_RECEIVE;
+				goto I2C_DONE_SEND;
+
+			I2C_RECEIVE:
+				HAL_I2C_Slave_Receive(Com.i2c_Handler->i2c, ack_data, 1, 500);
+				if (ack_data[0] != 1)
+					Error_Code = BKITCOM_NOACK;
+				else
+					Error_Code = BKITCOM_SUCCESS;
+				goto SEND_RETURN;
+
+			I2C_DONE_SEND:
+				break;
+
+		case SPI:
+			SPI_SEND:
+				if (spi_en == 0)
+					goto PROTOCOL_NOT_INIT;
+				Error_Code = HAL_SPI_Transmit(Com.spi_Handler->spi, data, data_length, 50);
+				receive_label = &&SPI_RECEIVE;
+				goto SPI_DONE_SEND;
+
+			SPI_RECEIVE:
+				HAL_SPI_Slave_Receive(Com.spi_Handler->spi, ack_data, 1, 500);
+				if (ack_data[0] != 1)
+					Error_Code = BKITCOM_NOACK;
+				else
+					Error_Code = BKITCOM_SUCCESS;
+				goto SEND_RETURN;
+
+			SPI_DONE_SEND:
+				break;
+
+		case RS485:
+			RS485_SEND:
+				if (RS485_en == 0)
+					goto PROTOCOL_NOT_INIT;
+
+			RS485_RECEIVE:
+				/*Fill later on*/
+
+			RS485_DONE_SEND:
+			break;
+
+		default:
+			/*Dealing with uninitialized protocol calling*/
+			PROTOCOL_NOT_INIT:
+			return BKITCOM_PROTOCOL_NOT_INIT;
+		}
+
+	ERROR_CODE_HANDLER:
+		code = Error_Code_Handler(Error_Code);
+
+		if (code == BKITCOM_SUCCESS) {
+			/*Waiting for acknowledge*/
+			goto * receive_label;
+		} else if (retry < 3) {
+			/*Auto retry*/
+			retry++;
+			goto SEND_MESSAGE;
+		}
+
+	SEND_RETURN:
+		return code;
 }
 
 BKITCOM_Error_Code hw_receive(uint8_t * data);
@@ -341,23 +401,23 @@ BKITCOM_Error_Code hw_receive(uint8_t * data);
 void Hardware_Interface_Layer_FSM (void) {
 	switch (state) {
 	case IDLE:
-	/*Com_Send_Signal is set when sending function is called. Check Com_Send_Signal for arriving calling sending function*/
-		if (Com_Send_Signal != NONE) {
-			state = VERI_SENDING;
-		}
+//	/*Com_Send_Signal is set when sending function is called. Check Com_Send_Signal for arriving calling sending function*/
+//		if (Com_Send_Signal != NONE) {
+//			state = VERI_SENDING;
+//		}
 		if (Com_Receive_Signal != NONE){
 			state = VERI_RECEIVING;
 		}
 		break;
-	/*Verified error code after sending*/
-	case VERI_SENDING:
-		if (code == SUCCESS)
-			state = IDLE;
-		else {
-				
-			}
-		}
-		break;
+//	/*Verified error code after sending*/
+//	case VERI_SENDING:
+//		if (code == SUCCESS)
+//			state = IDLE;
+//		else {
+//
+//			}
+//		}
+//		break;
 	case VERI_RECEIVING:
 		if (code == SUCCESS){
 			state = IDLE;

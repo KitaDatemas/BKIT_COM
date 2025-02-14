@@ -9,6 +9,7 @@
 #define INC_HARDWARE_INTERFACE_LAYER_H_
 #include "main.h"
 #include "Error_Code.h"
+#include "softwareTimer.h"
 
 typedef struct {
 	UART_HandleTypeDef * uart;
