@@ -125,7 +125,7 @@ void slave_init(void){
 		HAL_I2C_Slave_Receive_IT(Com.i2c_Handler->i2c, I2C_Buffer, 16);
 	}
 	if (RS485_en){
-
+		/*Preserved for future use*/
 	}
 }
 
@@ -400,6 +400,7 @@ BKITCOM_Error_Code hw_send(Protocol com,uint8_t * data, uint32_t data_length) {
 		default:
 			/*Dealing with uninitialized protocol calling*/
 			PROTOCOL_NOT_INIT:
+				Com_Send_Signal = NONE;
 				return BKITCOM_PROTOCOL_NOT_INIT;
 		}
 
@@ -416,28 +417,32 @@ BKITCOM_Error_Code hw_send(Protocol com,uint8_t * data, uint32_t data_length) {
 		}
 
 	SEND_RETURN:
+		Com_Send_Signal = NONE;
 		return code;
 }
 
 BKITCOM_Error_Code hw_receive(Protocol com, uint8_t * data, uint8_t data_length){
+	HAL_StatusTypeDef Error_Code;
+	BKITCOM_Error_Code code;
+
 	switch (com) {
 		case UART:
-			HAL_UART_Receive(Com.uart_Handler->uart, UART_Buffer, 16, 1000);
+			Error_Code = HAL_UART_Receive(Com.uart_Handler->uart, UART_Buffer, 16, 1000);
 			break;
 		case SPI:
-			HAL_SPI_Receive(Com.spi_Handler->spi, SPI_Buffer, 16, 1000);
+			Error_Code = HAL_SPI_Receive(Com.spi_Handler->spi, SPI_Buffer, 16, 1000);
 			break;
 		case I2C:
-			HAL_I2C_Slave_Receive(Com.i2c_Handler->i2c, I2C_Buffer, 16, 1000);
+			Error_Code = HAL_I2C_Slave_Receive(Com.i2c_Handler->i2c, I2C_Buffer, 16, 1000);
 			break;
 		case RS485:
 			break;
 		default:
 			break;
 	}
+	code = Err
+
 }
-
-
 
 void Hardware_Interface_Layer_FSM (void) {
 	switch (state) {
