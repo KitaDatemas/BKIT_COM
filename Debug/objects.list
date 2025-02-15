@@ -1,7 +1,6 @@
 "./Core/Src/EncryptDecrypt.o"
 "./Core/Src/Hardware_Interface_Layer.o"
 "./Core/Src/Message_Processing_Layer.o"
-"./Core/Src/aes.o"
 "./Core/Src/crc.o"
 "./Core/Src/main.o"
 "./Core/Src/stm32f4xx_hal_msp.o"

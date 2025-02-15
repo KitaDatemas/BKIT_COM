@@ -1,0 +1,2 @@
+../Core/Src/Message_Processing_Layer.c:26:6:FSM_ReceiveMessage	4	static
+../Core/Src/Message_Processing_Layer.c:30:6:FSM_SendMesage	4	static

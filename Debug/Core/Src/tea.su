@@ -1,0 +1,2 @@
+../Core/Src/tea.c:6:6:TEA_encrypt	32	static
+../Core/Src/tea.c:30:6:TEA_decrypt	32	static

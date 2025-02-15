@@ -8,7 +8,6 @@ C_SRCS += \
 ../Core/Src/EncryptDecrypt.c \
 ../Core/Src/Hardware_Interface_Layer.c \
 ../Core/Src/Message_Processing_Layer.c \
-../Core/Src/aes.c \
 ../Core/Src/crc.c \
 ../Core/Src/main.c \
 ../Core/Src/stm32f4xx_hal_msp.c \
@@ -21,7 +20,6 @@ OBJS += \
 ./Core/Src/EncryptDecrypt.o \
 ./Core/Src/Hardware_Interface_Layer.o \
 ./Core/Src/Message_Processing_Layer.o \
-./Core/Src/aes.o \
 ./Core/Src/crc.o \
 ./Core/Src/main.o \
 ./Core/Src/stm32f4xx_hal_msp.o \
@@ -34,7 +32,6 @@ C_DEPS += \
 ./Core/Src/EncryptDecrypt.d \
 ./Core/Src/Hardware_Interface_Layer.d \
 ./Core/Src/Message_Processing_Layer.d \
-./Core/Src/aes.d \
 ./Core/Src/crc.d \
 ./Core/Src/main.d \
 ./Core/Src/stm32f4xx_hal_msp.d \
@@ -51,7 +48,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/EncryptDecrypt.cyclo ./Core/Src/EncryptDecrypt.d ./Core/Src/EncryptDecrypt.o ./Core/Src/EncryptDecrypt.su ./Core/Src/Hardware_Interface_Layer.cyclo ./Core/Src/Hardware_Interface_Layer.d ./Core/Src/Hardware_Interface_Layer.o ./Core/Src/Hardware_Interface_Layer.su ./Core/Src/Message_Processing_Layer.cyclo ./Core/Src/Message_Processing_Layer.d ./Core/Src/Message_Processing_Layer.o ./Core/Src/Message_Processing_Layer.su ./Core/Src/aes.cyclo ./Core/Src/aes.d ./Core/Src/aes.o ./Core/Src/aes.su ./Core/Src/crc.cyclo ./Core/Src/crc.d ./Core/Src/crc.o ./Core/Src/crc.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/stm32f4xx_hal_msp.cyclo ./Core/Src/stm32f4xx_hal_msp.d ./Core/Src/stm32f4xx_hal_msp.o ./Core/Src/stm32f4xx_hal_msp.su ./Core/Src/stm32f4xx_it.cyclo ./Core/Src/stm32f4xx_it.d ./Core/Src/stm32f4xx_it.o ./Core/Src/stm32f4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f4xx.cyclo ./Core/Src/system_stm32f4xx.d ./Core/Src/system_stm32f4xx.o ./Core/Src/system_stm32f4xx.su
+	-$(RM) ./Core/Src/EncryptDecrypt.cyclo ./Core/Src/EncryptDecrypt.d ./Core/Src/EncryptDecrypt.o ./Core/Src/EncryptDecrypt.su ./Core/Src/Hardware_Interface_Layer.cyclo ./Core/Src/Hardware_Interface_Layer.d ./Core/Src/Hardware_Interface_Layer.o ./Core/Src/Hardware_Interface_Layer.su ./Core/Src/Message_Processing_Layer.cyclo ./Core/Src/Message_Processing_Layer.d ./Core/Src/Message_Processing_Layer.o ./Core/Src/Message_Processing_Layer.su ./Core/Src/crc.cyclo ./Core/Src/crc.d ./Core/Src/crc.o ./Core/Src/crc.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/stm32f4xx_hal_msp.cyclo ./Core/Src/stm32f4xx_hal_msp.d ./Core/Src/stm32f4xx_hal_msp.o ./Core/Src/stm32f4xx_hal_msp.su ./Core/Src/stm32f4xx_it.cyclo ./Core/Src/stm32f4xx_it.d ./Core/Src/stm32f4xx_it.o ./Core/Src/stm32f4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f4xx.cyclo ./Core/Src/system_stm32f4xx.d ./Core/Src/system_stm32f4xx.o ./Core/Src/system_stm32f4xx.su
 
 .PHONY: clean-Core-2f-Src
 

@@ -22,7 +22,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "EncryptDecrypt.h"
-#include "aes.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -123,13 +122,6 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint8_t data[16] = {0x12, 0x03, 0x00, 0x00, 0x00, 0x01, 0xA9, 0x86,
-                      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-
-  aes_encrypt(data);
-  aes_decrypt(data);
-
-  HAL_UART_Transmit(&huart1, data, 16, 1000);
   while (1)
   {
     /* USER CODE END WHILE */

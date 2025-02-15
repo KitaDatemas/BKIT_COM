@@ -13,5 +13,4 @@
 #include "EncryptDecrypt.h"
 
 
-
 #endif /* INC_MESSAGE_PROCESSING_LAYER_H_ */

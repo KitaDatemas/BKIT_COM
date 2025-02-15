@@ -1,2 +1,4 @@
-../Core/Src/EncryptDecrypt.c:13:6:aes_encrypt	208	static
-../Core/Src/EncryptDecrypt.c:19:6:aes_decrypt	208	static
+../Core/Src/EncryptDecrypt.c:12:10:TEA_encrypt	64	static
+../Core/Src/EncryptDecrypt.c:26:10:TEA_decrypt	64	static
+../Core/Src/EncryptDecrypt.c:38:6:padData	40	static
+../Core/Src/EncryptDecrypt.c:44:6:unpadData	32	static
