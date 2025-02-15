@@ -70,6 +70,7 @@ extern BKITCOM_Error_Code code;
 
 extern Protocol Com_Send_Signal;
 extern Protocol Com_Receive_Signal;
+extern CRC_Status_type_t CRC_CheckFlag;
 extern char Received_Buffer_Flag;
 
 extern uint8_t UART_Buffer[16];

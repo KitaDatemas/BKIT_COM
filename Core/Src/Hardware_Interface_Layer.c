@@ -12,8 +12,9 @@ uint8_t Received_Buffer[50] = {0};
 
 BKITCOM_Error_Code code;
 BKITCOM_type_t Com;
-Protocol Com_Send_Signal;
-Protocol Com_Receive_Signal;
+Protocol Com_Send_Signal = NONE;
+Protocol Com_Receive_Signal = NONE;
+CRC_Status_type_t CRC_CheckFlag = NONE;
 
 BKITCOM_Role_type_t BKITCOM_Role;
 
