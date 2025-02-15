@@ -298,8 +298,7 @@ BKITCOM_Error_Code ErrorCode_Handler (HAL_StatusTypeDef Error_Code) {
 				i2c_reboot();
 				return BKITCOM_I2C_COLLISION;
 			}
-		}
-		break;
+			break;
 		case SPI:
 			Error_Code = HAL_SPI_GetError(Com.spi_Handler->spi);
 			if (Error_Code == HAL_SPI_ERROR_FRE) {
@@ -316,6 +315,7 @@ BKITCOM_Error_Code ErrorCode_Handler (HAL_StatusTypeDef Error_Code) {
 			break;
 		default:
 			break;
+		}
 	}
 }
 
@@ -440,8 +440,7 @@ BKITCOM_Error_Code hw_receive(Protocol com, uint8_t * data, uint8_t data_length)
 		default:
 			break;
 	}
-	code = Err
-
+	return ErrorCode_Handler(Error_Code);
 }
 
 void Hardware_Interface_Layer_FSM (void) {
@@ -472,4 +471,17 @@ void Hardware_Interface_Layer_FSM (void) {
 	case ERROR_STATE:
 		break;
 	}
+}
+
+/*Callback function definition*/
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+	Com_Receive_Signal = UART;
+}
+
+void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef *hi2c) {
+	Com_Receive_Signal = I2C;
+}
+
+void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi) {
+	Com_Receive_Signal = SPI;
 }
