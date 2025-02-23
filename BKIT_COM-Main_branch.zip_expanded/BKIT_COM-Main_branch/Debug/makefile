@@ -63,8 +63,8 @@ all: main-build
 main-build: Protocol_layering.elf secondary-outputs
 
 # Tool invocations
-Protocol_layering.elf Protocol_layering.map: $(OBJS) $(USER_OBJS) C:\Users\Dell\STM32CubeIDE\workspace_1.7.0\BKIT_COM-Main_branch.zip_expanded\BKIT_COM-Main_branch\STM32F407ZGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Protocol_layering.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Dell\STM32CubeIDE\workspace_1.7.0\BKIT_COM-Main_branch.zip_expanded\BKIT_COM-Main_branch\STM32F407ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Protocol_layering.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Protocol_layering.elf Protocol_layering.map: $(OBJS) $(USER_OBJS) D:\HCMUT-K22\BKIT\BKIT_COM\BKITCOM\BKIT_COM-Main_branch.zip_expanded\BKIT_COM-Main_branch\STM32F407ZGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Protocol_layering.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\HCMUT-K22\BKIT\BKIT_COM\BKITCOM\BKIT_COM-Main_branch.zip_expanded\BKIT_COM-Main_branch\STM32F407ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Protocol_layering.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
